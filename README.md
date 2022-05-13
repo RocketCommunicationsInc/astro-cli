@@ -1,6 +1,7 @@
 # Astro CLI
 
-==This Repo is under development and not meant for use. Stay tuned!==
+| :exclamation:  This Repo is under development and not meant for use. Stay tuned!  |
+|-----------------------------------------|
 
 ### Usage
 
