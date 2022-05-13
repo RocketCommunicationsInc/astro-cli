@@ -41,8 +41,8 @@
     "typescript": "^4.4.3"
   },
   "oclif": {
-    "bin": "hello-world",
-    "dirname": "hello-world",
+    "bin": "astro-cli",
+    "dirname": "astro-cli",
     "commands": "./dist/commands",
     "plugins": [
       "@oclif/plugin-help",
@@ -50,8 +50,8 @@
     ],
     "topicSeparator": " ",
     "topics": {
-      "hello": {
-        "description": "Say hello to the world and others"
+      "starter-kits": {
+        "description": "Commands to bootstrap a new Astro UXDS web-component app in the given framework."
       }
     }
   },

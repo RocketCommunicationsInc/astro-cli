@@ -1,4 +1,4 @@
-import { Command, CliUx } from "@oclif/core";
+import { Command } from "@oclif/core";
 const http = require("https");
 const fs = require("fs");
 const process = require("process");
@@ -18,7 +18,7 @@ export default class React extends Command {
   static description =
     "Bootstrap a new React app using the @astrouxds/react wrapper.";
 
-  static examples = ["<%= config.bin %> <%= command.id %>"];
+  static examples = ["<%= config.bin %> <%= command.id %> my-new-app"];
 
   // static flags = {
   //   // flag with a value (-n, --name=VALUE)
@@ -30,7 +30,7 @@ export default class React extends Command {
   static args = [
     {
       name: "directory",
-      description: "The directory to build the new React app.",
+      description: "The directory to hold the new React app.",
       required: true,
     },
   ];
@@ -177,22 +177,22 @@ export default class React extends Command {
         title: `${processLog(`Writing public directory...`)}`,
         task: () => this.writePublic(),
       },
-      // {
-      //   title: `${processLog(`Installing depedencies with npm...`)}`,
-      //   task: (ctx: any, task: any) =>
-      //     execa("npm", ["install"]).catch(() => {
-      //       ctx.npm = false;
-      //       manager = "yarn";
-      //       task.skip(
-      //         `${caution(`npm not installed, using a yarn install instead`)}`
-      //       );
-      //     }),
-      // },
-      // {
-      //   title: `${processLog(`Installing depedencies with yarn...`)}`,
-      //   enabled: (ctx: any) => ctx.npm === false,
-      //   task: () => execa("yarn"),
-      // },
+      {
+        title: `${processLog(`Installing depedencies with npm...`)}`,
+        task: (ctx: any, task: any) =>
+          execa("npm", ["install"]).catch(() => {
+            ctx.npm = false;
+            manager = "yarn";
+            task.skip(
+              `${caution(`npm not installed, using a yarn install instead`)}`
+            );
+          }),
+      },
+      {
+        title: `${processLog(`Installing depedencies with yarn...`)}`,
+        enabled: (ctx: any) => ctx.npm === false,
+        task: () => execa("yarn"),
+      },
     ]);
 
     tasks
