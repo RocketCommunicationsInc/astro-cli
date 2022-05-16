@@ -76,20 +76,20 @@ export default class React extends Command {
   }
 
   private async changeDir(dir: string) {
-    try {
-      if (!fs.existsSync(dir)) {
-        fs.mkdirSync(dir);
-        process.chdir(dir);
-      } else {
-        process.chdir(dir);
-      }
-    } catch {
-      this.log(
-        `${error(
-          `[Error] - An error occured when trying to change directory.`
-        )}`
-      );
+    // try {
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir);
+      process.chdir(dir);
+    } else {
+      process.chdir(dir);
     }
+    // } catch {
+    //   this.log(
+    //     `${error(
+    //       `[Error] - An error occured when trying to change directory.`
+    //     )}`
+    //   );
+    // }
   }
 
   private async writeRoot(dir: string) {
@@ -108,43 +108,43 @@ export default class React extends Command {
   }
 
   private async writeSrc() {
-    try {
-      await this.changeDir("./src");
-      this.inSrc = true;
-      await this.writeFile("App.css");
-      await this.writeFile("App.js");
-      await this.writeFile("App.test.js");
-      await this.writeFile("index.css");
-      await this.writeFile("index.js");
-      await this.writeFile("reportWebVitals.js");
-      await this.writeFile("setupTests.js");
-    } catch {
-      this.log(
-        `${error(
-          `[Error] - An error occured while writing the ./src directory`
-        )}`
-      );
-    }
+    // try {
+    await this.changeDir("./src");
+    this.inSrc = true;
+    await this.writeFile("App.css");
+    await this.writeFile("App.js");
+    await this.writeFile("App.test.js");
+    await this.writeFile("index.css");
+    await this.writeFile("index.js");
+    await this.writeFile("reportWebVitals.js");
+    await this.writeFile("setupTests.js");
+    // } catch {
+    //   this.log(
+    //     `${error(
+    //       `[Error] - An error occured while writing the ./src directory`
+    //     )}`
+    //   );
+    // }
   }
 
   private async writePublic() {
-    try {
-      await this.changeDir("../");
-      await this.changeDir("./public");
-      this.inPublic = true;
-      await this.writeFile("favicon.ico");
-      await this.writeFile("index.html");
-      await this.writeFile("logo512.png");
-      await this.writeFile("logo192.png");
-      await this.writeFile("manifest.json");
-      await this.writeFile("robots.txt");
-    } catch {
-      this.log(
-        `${error(
-          `[Error] - An error occured while writing the ./public directory`
-        )}`
-      );
-    }
+    // try {
+    await this.changeDir("../");
+    await this.changeDir("./public");
+    this.inPublic = true;
+    await this.writeFile("favicon.ico");
+    await this.writeFile("index.html");
+    await this.writeFile("logo512.png");
+    await this.writeFile("logo192.png");
+    await this.writeFile("manifest.json");
+    await this.writeFile("robots.txt");
+    // } catch {
+    //   this.log(
+    //     `${error(
+    //       `[Error] - An error occured while writing the ./public directory`
+    //     )}`
+    //   );
+    // }
   }
 
   private nextSteps(dir: string, manager: string) {
@@ -200,6 +200,7 @@ export default class React extends Command {
       .then(() => {
         this.log(`${success(`Finished!`)}`);
         this.nextSteps(dir, manager);
+        this.log("Listr errors: ", tasks.err);
       })
       .catch((err: any) => {
         console.error(err);

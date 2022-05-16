@@ -6,6 +6,7 @@
 /package-lock.json
 /tmp
 /yarn.lock
+/my-app
 node_modules
 oclif.manifest.json
 tsconfig.tsbuildinfo
