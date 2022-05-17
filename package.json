@@ -1,15 +1,15 @@
 {
   "name": "astro-cli",
   "version": "0.0.0",
-  "description": "",
+  "description": "A command line tool to help with all things Astro UXDS.",
   "author": "Micah Jones @micahjones13",
   "bin": {
     "astro-cli": "./bin/run"
   },
-  "homepage": "",
+  "homepage": "https://github.com/RocketCommunicationsInc/astro-cli",
   "license": "MIT",
   "main": "dist/index.js",
-  "repository": "",
+  "repository": "https://github.com/RocketCommunicationsInc/astro-cli",
   "files": [
     "/bin",
     "/dist",
@@ -20,7 +20,6 @@
     "@oclif/core": "^1.7.0",
     "@oclif/plugin-help": "^5",
     "@oclif/plugin-plugins": "^2.0.1",
-    "axios": "^0.27.2",
     "listr2": "^4.0.5"
   },
   "devDependencies": {
