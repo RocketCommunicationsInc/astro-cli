@@ -1,9 +1,9 @@
-import { Command } from "@oclif/core";
+import { Command, Flags } from "@oclif/core";
+import { Listr } from "listr2";
 const http = require("https");
 const fs = require("fs");
 const process = require("process");
 const execa = require("execa");
-const Listr = require("listr");
 
 import {
   error,
@@ -20,12 +20,13 @@ export default class React extends Command {
 
   static examples = ["<%= config.bin %> <%= command.id %> my-new-app"];
 
-  // static flags = {
-  //   // flag with a value (-n, --name=VALUE)
-  //   name: Flags.string({char: 'n', description: 'name to print'}),
-  //   // flag with no value (-f, --force)
-  //   force: Flags.boolean({char: 'f'}),
-  // }
+  static flags = {
+    // flag with a boolean (-n, --noinstall=boolean)
+    noinstall: Flags.boolean({
+      char: "n",
+      description: "Skip the automatic install of dependencies.",
+    }),
+  };
 
   static args = [
     {
@@ -61,7 +62,8 @@ export default class React extends Command {
         res.pipe(file);
       })
       .catch((err) => {
-        this.log(`${error(`[Error] - ${err}`)}`);
+        this.log(`${error(`[Error] - Failed to fetch file ${fileName}}`)}`);
+        throw new Error();
       });
   }
 
@@ -76,20 +78,18 @@ export default class React extends Command {
   }
 
   private async changeDir(dir: string) {
-    // try {
-    if (!fs.existsSync(dir)) {
-      fs.mkdirSync(dir);
-      process.chdir(dir);
-    } else {
-      process.chdir(dir);
+    try {
+      if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir);
+        process.chdir(dir);
+      } else {
+        process.chdir(dir);
+      }
+    } catch {
+      throw new Error(
+        `An error occured while trying to change directory to ${dir}`
+      );
     }
-    // } catch {
-    //   this.log(
-    //     `${error(
-    //       `[Error] - An error occured when trying to change directory.`
-    //     )}`
-    //   );
-    // }
   }
 
   private async writeRoot(dir: string) {
@@ -99,52 +99,44 @@ export default class React extends Command {
       await this.writeFile("README.md");
       await this.writeFile(".gitignore");
     } catch {
-      this.log(
-        `${error(
-          `[Error] - An error occured while writing the ${dir} directory`
-        )}`
+      throw new Error(
+        `${error(`An error occured while writing the ${dir} directory.`)}`
       );
     }
   }
 
   private async writeSrc() {
-    // try {
-    await this.changeDir("./src");
-    this.inSrc = true;
-    await this.writeFile("App.css");
-    await this.writeFile("App.js");
-    await this.writeFile("App.test.js");
-    await this.writeFile("index.css");
-    await this.writeFile("index.js");
-    await this.writeFile("reportWebVitals.js");
-    await this.writeFile("setupTests.js");
-    // } catch {
-    //   this.log(
-    //     `${error(
-    //       `[Error] - An error occured while writing the ./src directory`
-    //     )}`
-    //   );
-    // }
+    try {
+      await this.changeDir("./src");
+      this.inSrc = true;
+      await this.writeFile("App.css");
+      await this.writeFile("App.js");
+      await this.writeFile("App.test.js");
+      await this.writeFile("index.css");
+      await this.writeFile("index.js");
+      await this.writeFile("reportWebVitals.js");
+      await this.writeFile("setupTests.js");
+    } catch {
+      throw new Error(
+        `${error(`An error occured while writing the ./src directory.`)}`
+      );
+    }
   }
 
   private async writePublic() {
-    // try {
-    await this.changeDir("../");
-    await this.changeDir("./public");
-    this.inPublic = true;
-    await this.writeFile("favicon.ico");
-    await this.writeFile("index.html");
-    await this.writeFile("logo512.png");
-    await this.writeFile("logo192.png");
-    await this.writeFile("manifest.json");
-    await this.writeFile("robots.txt");
-    // } catch {
-    //   this.log(
-    //     `${error(
-    //       `[Error] - An error occured while writing the ./public directory`
-    //     )}`
-    //   );
-    // }
+    try {
+      await this.changeDir("../");
+      await this.changeDir("./public");
+      this.inPublic = true;
+      await this.writeFile("favicon.ico");
+      await this.writeFile("index.html");
+      await this.writeFile("logo512.png");
+      await this.writeFile("logo192.png");
+      await this.writeFile("manifest.json");
+      await this.writeFile("robots.txt");
+    } catch {
+      throw new Error(`An error occured while writing the ./public directory.`);
+    }
   }
 
   private nextSteps(dir: string, manager: string) {
@@ -157,6 +149,8 @@ export default class React extends Command {
 
   public async run(): Promise<void> {
     const { args } = await this.parse(React);
+    const { flags } = await this.parse(React);
+
     const dir = args.directory;
     let manager = "npm";
     this.log(
@@ -164,43 +158,64 @@ export default class React extends Command {
         `Creating a new Astro UXDS React app in: ${info(`${dir}`)}`
       )}`
     );
-    const tasks = new Listr([
+    const tasks = new Listr(
+      [
+        {
+          title: `${processLog(`Writing root directory...`)}`,
+          task: async () =>
+            await this.writeRoot(dir).catch((err) => {
+              throw new Error(err);
+            }),
+        },
+        {
+          title: `${processLog(`Writing src directory...`)}`,
+          task: async () =>
+            await this.writeSrc().catch((err) => {
+              throw new Error(err);
+            }),
+        },
+        {
+          title: `${processLog(`Writing public directory...`)}`,
+          task: async () =>
+            await this.writePublic().catch((err) => {
+              throw new Error(err);
+            }),
+        },
+        {
+          title: `${processLog(`Installing depedencies with npm...`)}`,
+          enabled: () => flags.noinstall === false,
+          task: async (ctx: any, task: any) =>
+            execa("npm", ["install"]).catch(() => {
+              ctx.npm = false;
+              manager = "yarn";
+              task.skip(
+                `${caution(`npm not installed, using a yarn install instead`)}`
+              );
+            }),
+        },
+        {
+          title: `${processLog(`Installing depedencies with yarn...`)}`,
+          enabled: (ctx: any) => ctx.npm === false,
+          task: async () => execa("yarn"),
+        },
+      ],
       {
-        title: `${processLog(`Writing root directory...`)}`,
-        task: () => this.writeRoot(dir),
-      },
-      {
-        title: `${processLog(`Writing src directory...`)}`,
-        task: () => this.writeSrc(),
-      },
-      {
-        title: `${processLog(`Writing public directory...`)}`,
-        task: () => this.writePublic(),
-      },
-      {
-        title: `${processLog(`Installing depedencies with npm...`)}`,
-        task: (ctx: any, task: any) =>
-          execa("npm", ["install"]).catch(() => {
-            ctx.npm = false;
-            manager = "yarn";
-            task.skip(
-              `${caution(`npm not installed, using a yarn install instead`)}`
-            );
-          }),
-      },
-      {
-        title: `${processLog(`Installing depedencies with yarn...`)}`,
-        enabled: (ctx: any) => ctx.npm === false,
-        task: () => execa("yarn"),
-      },
-    ]);
+        //? Should this be true? If one of the write functions fails, its safe to say that the app won't build correctly. But if the npm i or yarn commands fail, that's fine
+        exitOnError: true,
+        concurrent: false,
+      }
+    );
 
     tasks
       .run()
       .then(() => {
         this.log(`${success(`Finished!`)}`);
         this.nextSteps(dir, manager);
-        this.log("Listr errors: ", tasks.err);
+        // if (tasks.err) {
+        //   for (const k in tasks.err) {
+        //     console.log(tasks.err[k]);
+        //   }
+        // }
       })
       .catch((err: any) => {
         console.error(err);
@@ -208,8 +223,7 @@ export default class React extends Command {
   }
 }
 
-// ! Current issues:
 /**
- * 1 - Error checking - if you misname one of the files for the writeFile method, it will not throw an error.
- *
+ * 1 - Error checking - now throws errors. However, the spinner next to the task in the console doens't change itself to an x, instead it renders a new line.
+ *    The error logging could be better too. Perhaps add a message that advises on potential fixes or to open a github issue? Maybe that's only on a verbose mode?
  */
