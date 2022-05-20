@@ -25,6 +25,18 @@ export default class React extends Command {
     noinstall: Flags.boolean({
       char: "n",
       description: "Skip the automatic install of dependencies.",
+      default: false,
+      exclusive: ["yarn", "npm"],
+    }),
+    yarn: Flags.boolean({
+      description: "Install dependencies with yarn",
+      default: false,
+      exclusive: ["npm", "noinstall"],
+    }),
+    npm: Flags.boolean({
+      description: "Install dependencies with NPM",
+      default: false,
+      exclusive: ["yarn", "noinstall"],
     }),
   };
 
@@ -62,8 +74,7 @@ export default class React extends Command {
         res.pipe(file);
       })
       .catch((err) => {
-        this.log(`${error(`[Error] - Failed to fetch file ${fileName}}`)}`);
-        throw new Error();
+        throw new Error(err);
       });
   }
 
@@ -72,7 +83,7 @@ export default class React extends Command {
       http.get(url, (res: any) => {
         if (res.statusCode === 200) {
           resolve(res);
-        } else reject(`Failure to fetch file at ${url}`);
+        } else reject(`${res.statusCode} - Could not fetch file from ${url}`);
       });
     });
   }
@@ -98,10 +109,8 @@ export default class React extends Command {
       await this.writeFile("package.json");
       await this.writeFile("README.md");
       await this.writeFile(".gitignore");
-    } catch {
-      throw new Error(
-        `${error(`An error occured while writing the ${dir} directory.`)}`
-      );
+    } catch (err) {
+      throw new Error(`${error(`${err}`)}`);
     }
   }
 
@@ -116,10 +125,8 @@ export default class React extends Command {
       await this.writeFile("index.js");
       await this.writeFile("reportWebVitals.js");
       await this.writeFile("setupTests.js");
-    } catch {
-      throw new Error(
-        `${error(`An error occured while writing the ./src directory.`)}`
-      );
+    } catch (err) {
+      throw new Error(`${error(`${err}`)}`);
     }
   }
 
@@ -134,14 +141,20 @@ export default class React extends Command {
       await this.writeFile("logo192.png");
       await this.writeFile("manifest.json");
       await this.writeFile("robots.txt");
-    } catch {
-      throw new Error(`An error occured while writing the ./public directory.`);
+    } catch (err) {
+      throw new Error(`${error(`${err}`)}`);
     }
   }
 
   private nextSteps(dir: string, manager: string) {
     this.log(`${infoBg(`******* Next Steps *********`)}`);
     this.log(`${infoBg(`cd ${dir}                   `)}`);
+    //if noinstall is true, next steps should say to npm i or yarn
+    if (React.flags.noinstall) {
+      manager === "npm"
+        ? this.log(`${infoBg(`npm install                 `)}`)
+        : this.log(`${infoBg(`yarn                        `)}`);
+    }
     this.log(`${infoBg(`${manager} start                   `)}`);
     this.log(`${infoBg(`Thanks for using Astro UXDS!`)}`);
     this.log(`${infoBg(`****************************`)}`);
@@ -183,7 +196,7 @@ export default class React extends Command {
         },
         {
           title: `${processLog(`Installing depedencies with npm...`)}`,
-          enabled: () => flags.noinstall === false,
+          enabled: () => flags.npm || (!flags.noinstall && !flags.yarn),
           task: async (ctx: any, task: any) =>
             execa("npm", ["install"]).catch(() => {
               ctx.npm = false;
@@ -195,12 +208,19 @@ export default class React extends Command {
         },
         {
           title: `${processLog(`Installing depedencies with yarn...`)}`,
-          enabled: (ctx: any) => ctx.npm === false,
-          task: async () => execa("yarn"),
+          enabled: (ctx: any) =>
+            ctx.npm === false || (flags.yarn && !flags.noinstall),
+          task: async (task: any) =>
+            execa("yarn").catch(() => {
+              task.skip(
+                `${caution(
+                  `yarn not detected, please manually install dependencies.`
+                )}`
+              );
+            }),
         },
       ],
       {
-        //? Should this be true? If one of the write functions fails, its safe to say that the app won't build correctly. But if the npm i or yarn commands fail, that's fine
         exitOnError: true,
         concurrent: false,
       }
@@ -211,14 +231,16 @@ export default class React extends Command {
       .then(() => {
         this.log(`${success(`Finished!`)}`);
         this.nextSteps(dir, manager);
+      })
+      .catch(() => {
+        // This infor is already displayed. If there is more relevant infor stored in tasks.err, we could display that this way, probably througha verbose tag.
         // if (tasks.err) {
         //   for (const k in tasks.err) {
-        //     console.log(tasks.err[k]);
+        //     this.log(`Failed at task name: ${tasks.err[k].task.title}`);
+        //     this.log(`Failure Message: ${tasks.err[k].message}`);
+        //     this.log(`***********`);
         //   }
         // }
-      })
-      .catch((err: any) => {
-        console.error(err);
       });
   }
 }
@@ -226,4 +248,20 @@ export default class React extends Command {
 /**
  * 1 - Error checking - now throws errors. However, the spinner next to the task in the console doens't change itself to an x, instead it renders a new line.
  *    The error logging could be better too. Perhaps add a message that advises on potential fixes or to open a github issue? Maybe that's only on a verbose mode?
+ *    should delete the dir of copied files after a failure
+ * potential failuers:
+ * - permissions
+ * - fetching (github down, bad internet, req time out)
+ * msging - link to react-docs
+ *
+ * 2 - Should it fail on error? Only fail on specifc task errors, ie. on writing file tasks?
+ *
+ *
+ * 3 - What other commands would be useful for an astro-cli?
+ *     Ideas:
+ *       - linting stuff, compliance checking (lint), design tokens, auto-upgrade new versions (migrations for breaking changes) or just notify where changes need to be made,
+ *
+ * Maintanance Notes -
+ * - Will need to update the url used in this script to the new location once we move starter-kits out of mono-repo
+ * - Need to update react starter-kit to newest version of @astrouxds/react and react
  */
