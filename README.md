@@ -3,6 +3,8 @@
 | :exclamation: This repo is under development and currently only supports the react command. Stay tuned for more! |
 | ---------------------------------------------------------------------------------------------------------------- |
 
+A CLI tool to help with all things [@astrouxds](https://github.com/RocketCommunicationsInc/astro).
+
 _This cli currently only has the `astro-cli starter-kits react` command._
 
 ### Usage
