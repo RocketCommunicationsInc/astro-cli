@@ -1,6 +1,6 @@
 {
   "name": "astro-cli",
-  "version": "0.0.1",
+  "version": "0.0.5",
   "description": "A command line tool to help with all things Astro UXDS.",
   "author": "Micah Jones @micahjones13",
   "bin": {
