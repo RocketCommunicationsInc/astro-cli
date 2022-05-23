@@ -226,42 +226,9 @@ export default class React extends Command {
       }
     );
 
-    tasks
-      .run()
-      .then(() => {
-        this.log(`${success(`Finished!`)}`);
-        this.nextSteps(dir, manager);
-      })
-      .catch(() => {
-        // This infor is already displayed. If there is more relevant infor stored in tasks.err, we could display that this way, probably througha verbose tag.
-        // if (tasks.err) {
-        //   for (const k in tasks.err) {
-        //     this.log(`Failed at task name: ${tasks.err[k].task.title}`);
-        //     this.log(`Failure Message: ${tasks.err[k].message}`);
-        //     this.log(`***********`);
-        //   }
-        // }
-      });
+    tasks.run().then(() => {
+      this.log(`${success(`Finished!`)}`);
+      this.nextSteps(dir, manager);
+    });
   }
 }
-
-/**
- * 1 - Error checking - now throws errors. However, the spinner next to the task in the console doens't change itself to an x, instead it renders a new line.
- *    The error logging could be better too. Perhaps add a message that advises on potential fixes or to open a github issue? Maybe that's only on a verbose mode?
- *    should delete the dir of copied files after a failure
- * potential failuers:
- * - permissions
- * - fetching (github down, bad internet, req time out)
- * msging - link to react-docs
- *
- * 2 - Should it fail on error? Only fail on specifc task errors, ie. on writing file tasks?
- *
- *
- * 3 - What other commands would be useful for an astro-cli?
- *     Ideas:
- *       - linting stuff, compliance checking (lint), design tokens, auto-upgrade new versions (migrations for breaking changes) or just notify where changes need to be made,
- *
- * Maintanance Notes -
- * - Will need to update the url used in this script to the new location once we move starter-kits out of mono-repo
- * - Need to update react starter-kit to newest version of @astrouxds/react and react
- */
