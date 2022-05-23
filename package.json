@@ -66,7 +66,7 @@
   "engines": {
     "node": ">=12.0.0"
   },
-  "bugs": "https://github.com/micahjones13/hello-world/issues",
+  "bugs": "https://github.com/RocketCommunicationsInc/astro-cli/issues",
   "keywords": [
     "oclif"
   ],
