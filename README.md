@@ -1,7 +1,7 @@
 # Astro CLI
 
-| :exclamation: This repo is under development and not meant for use. Stay tuned! |
-| ------------------------------------------------------------------------------- |
+| :exclamation: This repo is under development and currently only supports the react command. Stay tuned for more! |
+| ---------------------------------------------------------------------------------------------------------------- |
 
 _This cli currently only has the `astro-cli starter-kits react` command._
 
