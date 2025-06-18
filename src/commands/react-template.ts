@@ -103,7 +103,7 @@ export default class Template extends Command {
     }
   }
 
-  private nextSteps(dir: string, manager: string) {
+  private nextSteps(dir: string, manager: string, noinstall: boolean) {
     // Calculate message length with minimum of 30 characters
     const msgLength = Math.max(dir.length + 3, 30);
 
@@ -120,7 +120,7 @@ export default class Template extends Command {
     this.log(`${infoBg(padMessage(`cd ${dir}`))}`);
 
     // If noinstall is true, next steps should say to npm i or yarn
-    if (Template.flags.noinstall) {
+    if (noinstall) {
       const installCmd = manager === "npm" ? "npm install" : "yarn";
       this.log(`${infoBg(padMessage(installCmd))}`);
     }
@@ -184,7 +184,7 @@ export default class Template extends Command {
 
     tasks.run().then(() => {
       this.log(`${success(`Finished!`)}`);
-      this.nextSteps(dir, manager);
+      this.nextSteps(dir, manager, flags.noinstall);
     });
   }
 }
