@@ -5,4 +5,4 @@ export const caution = chalk.bold.hex("#FCE83A");
 export const success = chalk.bold.hex("#00E200");
 export const processLog = chalk.hex("#4DACFF");
 export const info = chalk.hex("#92CBFF");
-export const infoBg = chalk.bgHex("#92CBFF").black;
+export const infoBg = chalk.bgHex("#1c3851").white;

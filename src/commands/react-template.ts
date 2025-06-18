@@ -67,9 +67,8 @@ export default class Template extends Command {
         __dirname,
         "..",
         "..",
-        "..",
         "templates",
-        "react-vite"
+        "react-template"
       );
 
       // Copy the template directory recursively
@@ -105,17 +104,30 @@ export default class Template extends Command {
   }
 
   private nextSteps(dir: string, manager: string) {
-    this.log(`${infoBg(`******* Next Steps *********`)}`);
-    this.log(`${infoBg(`cd ${dir}                   `)}`);
-    //if noinstall is true, next steps should say to npm i or yarn
+    // Calculate message length with minimum of 30 characters
+    const msgLength = Math.max(dir.length + 3, 30);
+
+    // Helper function to pad messages to consistent length
+    const padMessage = (message: string) => {
+      return message.padEnd(msgLength);
+    };
+
+    // Create header/footer with consistent length
+    const headerFooter = "*".repeat(msgLength);
+
+    this.log(`${infoBg(`${headerFooter}`)}`);
+    this.log(`${infoBg(`Next Steps:${" ".repeat(msgLength - 11)}`)}`);
+    this.log(`${infoBg(padMessage(`cd ${dir}`))}`);
+
+    // If noinstall is true, next steps should say to npm i or yarn
     if (Template.flags.noinstall) {
-      manager === "npm"
-        ? this.log(`${infoBg(`npm install                 `)}`)
-        : this.log(`${infoBg(`yarn                        `)}`);
+      const installCmd = manager === "npm" ? "npm install" : "yarn";
+      this.log(`${infoBg(padMessage(installCmd))}`);
     }
-    this.log(`${infoBg(`${manager} start                   `)}`);
-    this.log(`${infoBg(`Thanks for using Astro UXDS!`)}`);
-    this.log(`${infoBg(`****************************`)}`);
+
+    this.log(`${infoBg(padMessage(`${manager} run dev`))}`);
+    this.log(`${infoBg(padMessage(`Thanks for using Astro UXDS!`))}`);
+    this.log(`${infoBg(`${headerFooter}`)}`);
   }
 
   public async run(): Promise<void> {
