@@ -1,0 +1,54 @@
+<div class="gsb-wrapper">
+  <div class="gsb-icon">
+    <rux-pop-up [open]="appsOpen" placement="bottom-start">
+      <rux-icon size="2.25rem" icon="apps" slot="trigger" />
+      <rux-menu>
+        <rux-menu-item (click)="handleDarkMode()">
+          @if (!darkMode) {
+          <span>
+            <rux-icon icon="brightness-2" size="1rem" />
+            Dark Mode
+          </span>
+          } @else {
+          <span>
+            <rux-icon icon="brightness-5" size="1rem" />
+            Light Mode
+          </span>
+          }
+        </rux-menu-item>
+      </rux-menu>
+    </rux-pop-up>
+  </div>
+  <div class="gsb-content">
+    <div class="gsb_app-header">
+      <h1 class="gsb_app-domain">ROCKET</h1>
+      <h1 class="gsb_app-name">Flight Dynamics</h1>
+    </div>
+  </div>
+  <div class="clock-wrapper">
+    <rux-clock hide-labels small />
+  </div>
+</div>
+<!-- <rux-global-status-bar compact app-domain="ROCKET" app-name="Flight Dynamics">
+  <rux-pop-up [open]="appsOpen" placement="bottom-start" slot="left-side">
+      <rux-icon size="2.25rem" icon="apps" slot="trigger" />
+      <rux-menu>
+        <rux-menu-item (click)="handleDarkMode()">
+          @if (!darkMode) {
+          <span>
+            <rux-icon icon="brightness-2" size="1rem" />
+            Dark Mode
+          </span>
+          } @else {
+          <span>
+            <rux-icon icon="brightness-5" size="1rem" />
+            Light Mode
+          </span>
+          }
+        </rux-menu-item>
+      </rux-menu>
+    </rux-pop-up>
+    <div class="clock-wrapper">
+    <rux-clock hide-labels small />
+  </div>
+</rux-global-status-bar> -->

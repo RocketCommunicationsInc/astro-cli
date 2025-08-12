@@ -1,0 +1,15 @@
+@import "@astrouxds/tokens/dist/css/base.reference.css";
+@import "@astrouxds/tokens/dist/css/base.system.css";
+@import "@astrouxds/tokens/dist/css/base.component.css";
+@import "@astrouxds/tokens/dist/css/theme.light.css";
+@import "@astrouxds/tokens/dist/css/classes/typography.css";
+
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-base);
+  background-color: var(--color-background-base-default);
+  color: var(--color-text-primary);
+}

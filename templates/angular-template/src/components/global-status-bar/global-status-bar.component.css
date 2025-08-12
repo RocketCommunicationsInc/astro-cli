@@ -1,0 +1,70 @@
+.gsb-wrapper {
+  display: flex;
+  /* 56px height */
+  height: var(--spacing-14);
+  background-color: var(--color-background-base-header);
+  color: var(--color-text-primary);
+  padding-inline-end: calc(5 * var(--spacing-1));
+  position: relative;
+
+  & .gsb-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-block: var(--spacing-2);
+    width: 48px;
+
+    & :hover {
+      cursor: pointer;
+    }
+
+    & rux-menu-item span {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-1);
+    }
+  }
+
+  & .gsb-content {
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    padding-inline-end: calc(6 * var(--spacing-1));
+    padding-block: var(--spacing-3);
+
+    & .gsb_app-header {
+      display: flex;
+      flex-flow: row;
+      justify-content: flex-start;
+      align-items: center;
+
+      & .gsb_app-domain {
+        font-size: var(--font-heading-1-bold-font-size);
+        margin-right: var(--spacing-2);
+        margin-block: 0;
+        font-size: 24px;
+      }
+
+      & .gsb_app-name {
+        font-size: var(--font-heading-1-font-size);
+        font-weight: var(--font-heading-1-font-weight);
+        margin-block: 0;
+        font-size: 24px;
+      }
+    }
+  }
+
+  & .clock-wrapper {
+    padding-top: calc(var(--spacing-3) - var(--spacing-050));
+    position: absolute;
+    left: 50%;
+
+    & rux-clock::part(date), rux-clock::part(time) {
+      height: calc(var(--spacing-8) - var(--spacing-1));
+      background: var(--color-background-base-default);
+      color: var(--color-text-primary);
+      box-shadow: none;
+      border: 1px solid var(--color-background-base-header);
+    }
+  }
+}

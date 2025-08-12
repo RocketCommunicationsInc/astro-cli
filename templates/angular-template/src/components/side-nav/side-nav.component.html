@@ -1,0 +1,25 @@
+<div class="side-nav" [attr.aria-expanded]="expanded">
+  <div class="side-nav_menu">
+    @for (item of navList; track item.id) {
+      <a
+      [attr.aria-current]="currentNav === item.id"
+      class="nav-item"
+      [routerLink]="item.id"
+      (click)="handleNavClick(item.id)"
+    >
+      <rux-icon icon="border-clear" size="1.5rem" />
+      <span [class.hidden]="!expanded">{{ item.name }}</span>
+    </a>
+    }
+  </div>
+  <div class="side-nav_toggle-wrapper">
+    <a class="nav-item" (click)="handleExpanded()">
+      <rux-icon class="side-nav_toggle" icon="keyboard-tab" size="1.5rem" />
+      <span [class.hidden]="!expanded">Close Navigation</span>
+    </a>
+    <a class="nav-item">
+      <rux-icon icon="power-settings-new" size="1.5rem" />
+      <span [class.hidden]="!expanded">Sign Out</span>
+    </a>
+  </div>
+</div>

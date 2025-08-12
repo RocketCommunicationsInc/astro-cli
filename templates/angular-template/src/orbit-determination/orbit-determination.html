@@ -1,0 +1,19 @@
+<rux-tabs id="od-tabs" small compact>
+  <rux-tab id="new-od-run">
+    <rux-icon icon="create-new-folder" size="1.25rem"></rux-icon>
+    New OD Run
+  </rux-tab>
+  <rux-tab id="history">
+    <rux-icon icon="list" size="1.25rem"></rux-icon>
+    History
+  </rux-tab>
+</rux-tabs>
+<rux-tab-panels aria-labelledby="od-tabs">
+  <rux-tab-panel aria-labelledby="new-od-run">
+    <rux-container>
+      <app-od-run-selector />
+      <app-od-run-inputs />
+    </rux-container>
+  </rux-tab-panel>
+  <rux-tab-panel aria-labelledby="history">HISTORY</rux-tab-panel>
+</rux-tab-panels>

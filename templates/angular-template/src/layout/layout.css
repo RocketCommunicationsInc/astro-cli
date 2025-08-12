@@ -1,0 +1,17 @@
+:host {
+  & rux-classification-marking {
+    height: 100vh;
+    display: block;
+    overflow: hidden;
+  }
+
+  & .layout-main {
+    display: flex;
+    height: calc(100% - 104px);
+  }
+
+  & .content-main {
+    padding: var(--spacing-2);
+    width: 100%;
+  }
+}

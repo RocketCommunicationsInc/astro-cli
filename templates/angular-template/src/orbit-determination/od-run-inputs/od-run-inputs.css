@@ -1,0 +1,33 @@
+:host {
+  padding: var(--spacing-4);
+
+  .od-run_input-wrapper {
+    width: 300px;
+    height: 100%;
+    box-sizing: border-box;
+    padding: var(--spacing-4);
+    border: 1px solid var(--color-background-interactive-muted);
+    border-radius: var(--spacing-2);
+    overflow: auto;
+
+    & h2 {
+      font-weight: 400;
+      margin: 0;
+    }
+
+    .od-run_inputs {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-3);
+      padding-block-start: var(--spacing-2);
+
+      & rux-button.od-run_inputs-set-schedule::part(container) {
+        padding-inline: 74px;
+      }
+
+      & rux-button.od-run_inputs-add-state::part(container) {
+        padding-inline: 86px;
+      }
+    }
+  }
+}

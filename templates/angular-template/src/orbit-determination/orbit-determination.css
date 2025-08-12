@@ -1,0 +1,38 @@
+:host {
+  & rux-tabs {
+    height: auto;
+
+    & rux-tab {
+      & rux-icon {
+        padding-inline-end: var(--spacing-2);
+      }
+    }
+  }
+
+  & rux-tab-panels {
+    height: calc(100% - 32px);
+    width: 100%;
+
+    & rux-tab-panel {
+      height: 100%;
+      width: 100%;
+
+      & rux-container {
+        box-sizing: border-box;
+        width: calc(100% - 2px);
+        height: 100%;
+      }
+
+      & rux-container::part(container) {
+        height: 100%;
+        width: 100%;
+        border-top: none;
+      }
+
+      & rux-container::part(body) {
+        display: flex;
+        height: calc(100% - 32px);
+      }
+    }
+  }
+}
