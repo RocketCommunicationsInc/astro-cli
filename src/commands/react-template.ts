@@ -15,7 +15,7 @@ const process = require("process");
 const path = require("path");
 const execa = require("execa");
 
-export default class Template extends Command {
+export default class ReactTemplate extends Command {
   static description =
     "Initialize a React app using the Astro UXDS components and templates.";
 
@@ -131,8 +131,8 @@ export default class Template extends Command {
   }
 
   public async run(): Promise<void> {
-    const { args } = await this.parse(Template);
-    const { flags } = await this.parse(Template);
+    const { args } = await this.parse(ReactTemplate);
+    const { flags } = await this.parse(ReactTemplate);
 
     const dir = args.directory;
     let manager = "npm";

@@ -6,15 +6,46 @@ This CLI provides commands to quickly scaffold new applications with Astro UXDS 
 
 ## Installation
 
-Install globally to use the CLI from anywhere:
+### Local Development Installation
+
+Since this package is not yet published on npm, you can install it locally using one of these methods:
+
+#### Method 1: Link Globally (Recommended for Development)
+
+```bash
+# From the astro-cli project directory
+npm run build
+npm link
+
+# Now you can use the CLI from anywhere
+astro-cli react-template my-app
+```
+
+#### Method 2: Run Directly from Project
+
+```bash
+# From the astro-cli project directory
+npm run build
+./bin/run react-template my-app --noinstall
+```
+
+#### Method 3: Install from Local Path
+
+```bash
+# From any directory, install from the local astro-cli path
+npm install -g /path/to/astro-cli
+
+# Or install locally in a project
+npm install /path/to/astro-cli
+```
+
+### Future: npm Installation (When Published)
+
+Once published to npm, you'll be able to install it with:
 
 ```bash
 npm install -g astro-cli
-```
-
-Or run commands directly with npx:
-
-```bash
+# or
 npx astro-cli <command>
 ```
 
@@ -103,3 +134,5 @@ npm run build
 - Use the `--noinstall` flag when testing to skip dependency installation and speed up testing
 - After making changes to the source code, run `npm run build` to recompile before testing
 - Use `npm link` to create a global symlink for local development testing
+- To unlink the global package: `npm unlink -g astro-cli`
+- To update the linked package after changes: `npm run build` (no need to re-link)
