@@ -1,30 +1,105 @@
 # Astro CLI
 
-| :exclamation: This repo is under development and currently only supports the react command. Stay tuned for more! |
-| ---------------------------------------------------------------------------------------------------------------- |
-
 A CLI tool to help with all things [@astrouxds](https://github.com/RocketCommunicationsInc/astro).
 
-_This cli currently only has the `astro-cli starter-kits react` command._
+This CLI provides commands to quickly scaffold new applications with Astro UXDS components and templates for React and Angular frameworks.
 
-### Usage
+## Installation
 
-`npx astro-cli starter-kits react`
+Install globally to use the CLI from anywhere:
 
-Or you can install globally in order to run `astro-cli <command>`
-
-```
-npm i -g astro-cli
+```bash
+npm install -g astro-cli
 ```
 
-### Commands
+Or run commands directly with npx:
 
-`astro-cli --help` - List help prompt for all commands
+```bash
+npx astro-cli <command>
+```
 
-`astro-cli starter-kits react [directory] [-n] [--yarn] [--npm]` - Bootstrap a new @astrouxds/react app to the given directory. Use `-n` or `--noinstall` to skip the automatic install of dependencies. Use the `--yarn` or `--npm` flags to specify which package manager to use.
+## Available Commands
 
-### Development
+### React Template
 
-Run commands using `bin/run <folder> <command>` or install globally.
+Create a new React application with Vite and Astro UXDS components:
 
-When testing starter-kit commands, it's recommended to use the `-n` flag in order to skip the installation of dependencies since they can take a good chunk of time.
+```bash
+astro-cli react-template <directory> [flags]
+```
+
+**Examples:**
+
+```bash
+# Create a React app in 'my-app' directory
+astro-cli react-template my-app
+
+# Skip automatic dependency installation
+astro-cli react-template my-app --noinstall
+
+# Use yarn for dependency installation
+astro-cli react-template my-app --yarn
+
+# Use npm for dependency installation
+astro-cli react-template my-app --npm
+```
+
+### Angular Template
+
+Create a new Angular application with Astro UXDS components:
+
+```bash
+astro-cli angular-template <directory> [flags]
+```
+
+**Examples:**
+
+```bash
+# Create an Angular app in 'my-angular-app' directory
+astro-cli angular-template my-angular-app
+
+# Skip automatic dependency installation
+astro-cli angular-template my-angular-app --noinstall
+```
+
+### Global Flags
+
+- `-n, --noinstall` - Skip the automatic installation of dependencies
+- `--yarn` - Use yarn for dependency installation (exclusive with --npm and --noinstall)
+- `--npm` - Use npm for dependency installation (exclusive with --yarn and --noinstall)
+
+### Help
+
+Get help for all commands:
+
+```bash
+astro-cli help
+```
+
+Get help for a specific command:
+
+```bash
+astro-cli help react-template
+astro-cli help angular-template
+```
+
+## Development
+
+### Running Commands Locally
+
+You can test commands locally without installing globally:
+
+```bash
+# Build the project first
+npm run build
+
+# Run commands using the local binary
+./bin/run react-template test-app --noinstall
+./bin/run angular-template test-app --noinstall
+```
+
+### Development Tips
+
+- Use the `--noinstall` flag when testing to skip dependency installation and speed up testing
+- After making changes to the source code, run `npm run build` to recompile before testing
+- Use `npm link` to create a global symlink for local development testing
