@@ -1,0 +1,44 @@
+:host {
+  height: calc(100% - 10px);
+  width: 370px;
+  flex-direction: column;
+  display: flex;
+  border-right: 1px solid var(--color-background-base-default);
+  padding-right: var(--spacing-4);
+
+  & .od-run_search-header {
+    display: flex;
+    gap: var(--spacing-3);
+    padding-block-end: var(--spacing-3);
+
+    & rux-button::part(container) {
+      padding-inline: calc(var(--spacing-10) - 2px);
+    }
+  }
+
+  & .od-run_main {
+    height: 100%;
+
+    & .od-run_item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      box-sizing: border-box;
+      border: 1px solid var(--color-background-interactive-muted);
+      border-radius: var(--spacing-2);
+      background-color: var(--color-background-surface-selected);
+      color: var(--color-text-placeholder);
+      padding: calc(var(--spacing-3) - 2px);
+    }
+  }
+
+  & .od-run_footer {
+    display: flex;
+    justify-content: center;
+
+    & rux-button {
+      background-color: var(--color-background-base-header);
+    }
+  }
+}

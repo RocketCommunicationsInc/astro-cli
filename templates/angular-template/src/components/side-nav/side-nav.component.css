@@ -1,0 +1,103 @@
+.side-nav {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: var(--color-background-surface-default);
+  block-size: calc(100vh - 104px);
+  width: 48px;
+  color: var(--color-text-secondary);
+  border-top: 1px solid var(--container-color-border);
+  border-right: 1px solid var(--container-color-border);
+
+  &[aria-expanded="true"] {
+    width: 362px;
+
+    & .side-nav_toggle {
+      transform: rotate(180deg);
+    }
+  }
+
+  & .side-nav_toggle-wrapper {
+    border-top: 1px solid var(--card-color-border);
+    & .side-nav_toggle {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    & .nav-item {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: var(--spacing-3);
+      width: 100%;
+      padding: var(--spacing-3);
+      text-decoration: none;
+      border-radius: 0;
+      border: none;
+      box-sizing: border-box;
+
+      &:hover {
+        cursor: pointer;
+        background-color: var(--color-background-surface-hover);
+      }
+    }
+
+    & .hidden {
+      display: none;
+    }
+  }
+
+  & .side-nav_menu {
+    display: flex;
+    flex-flow: column;
+    align-items: flex-start;
+    gap: var(--spacing-2);
+
+    & .nav-item {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: var(--spacing-3);
+      width: 100%;
+      padding: var(--spacing-3);
+      text-decoration: none;
+      border-radius: 0;
+      border: none;
+      box-sizing: border-box;
+
+      &:hover {
+        cursor: pointer;
+        background-color: var(--color-background-surface-hover);
+      }
+
+      &[aria-current="true"] {
+        background-color: var(--color-background-surface-selected);
+
+        &::before {
+          content: "";
+          position: absolute;
+          left: 0;
+          top: 0;
+          bottom: 0;
+          width: 4px;
+          background-color: var(--color-border-interactive-default);
+        }
+        & rux-icon {
+        color: var(--color-text-secondary);
+      }
+      }
+
+
+
+      & span {
+        color: var(--color-text-secondary);
+
+        &.hidden {
+          display: none;
+        }
+      }
+    }
+  }
+}

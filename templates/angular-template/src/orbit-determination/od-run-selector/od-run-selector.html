@@ -1,0 +1,42 @@
+<div class="od-run_search-header">
+  <rux-input type="text" placeholder="Search...">
+    <rux-icon slot="prefix" icon="search" size="1.25rem"></rux-icon>
+  </rux-input>
+  <rux-button secondary icon="create-new-folder">Create New</rux-button>
+</div>
+
+<div class="od-run_main">
+  @for (item of odRunItems; track item.id) {
+<div class="od-run_item">
+    <div class="od-run_item-content">
+      <div>{{item.name === '' ? 'Enter name...' : item.name}}</div>
+      <div>
+        <span>SV: {{item.SV}}</span> | <span>{{item.date}}</span>
+      </div>
+    </div>
+    <div class="od-run_item-buttons">
+      <rux-button
+        icon-only
+        borderless
+        [disabled]="item.disabled"
+        icon="repeat"
+        size="extra-small"
+      ></rux-button>
+      <rux-button
+        icon-only
+        borderless
+        icon="close"
+        size="extra-small"
+      ></rux-button>
+    </div>
+  </div>
+
+  }
+  </div>
+
+
+<div class="od-run_footer">
+  <rux-button borderless icon="check-box" size="small">Select All</rux-button>
+  <rux-button borderless icon="undo" size="small">Undo</rux-button>
+  <rux-button borderless icon="restore-from-trash" size="small">Remove All</rux-button>
+</div>
